@@ -21,6 +21,7 @@ function App() {
           Move your mouse around to test the cursor.
         </p>
 
+        {/* Button — hover state */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A BUTTON
@@ -28,7 +29,7 @@ function App() {
           <button
             style={{
               background: 'transparent',
-              border: '1px solid #1A1A1A',
+              border: '1px solid #333',
               color: '#F5F5F5',
               padding: '12px 28px',
               fontSize: '14px',
@@ -39,6 +40,7 @@ function App() {
           </button>
         </div>
 
+        {/* Link — link state */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A LINK
@@ -51,11 +53,13 @@ function App() {
           </a>
         </div>
 
+        {/* Project card — project state, shows OPEN */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A PROJECT CARD
           </p>
           <div
+            data-cursor="project"
             style={{
               width: '400px',
               height: '240px',
@@ -73,6 +77,7 @@ function App() {
           </div>
         </div>
 
+        {/* Accent */}
         <div>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             ACCENT COLOR
