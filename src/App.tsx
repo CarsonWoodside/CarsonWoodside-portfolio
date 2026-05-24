@@ -1,10 +1,12 @@
 import { CustomCursor } from './components/cursor/CustomCursor'
+import { NoiseBackground } from './components/noise/NoiseBackground'
 
 function App() {
   return (
     <>
       <CustomCursor />
-
+      <NoiseBackground />
+      
       <main
         style={{
           backgroundColor: '#050505',
