@@ -23,10 +23,10 @@
 
 ## Features
 
-- **Animated star field background** — twinkling stars with slow upward drift and cross sparkles on bright stars
-- **Constellation drawing** — stars near the cursor connect with faint lines on mouse movement
-- **Shooting stars** — random shooting stars streak across the screen every few seconds
-- **Custom cursor** — four states: default dot, hover ring, link glow, project OPEN label
+- **Animated star field background** - twinkling stars with slow upward drift and cross sparkles on bright stars
+- **Constellation drawing** - stars near the cursor connect with faint lines on mouse movement
+- **Shooting stars** - random shooting stars streak across the screen every few seconds
+- **Custom cursor** - four states: default dot, hover ring, link glow, project OPEN label
 
 ---
 
