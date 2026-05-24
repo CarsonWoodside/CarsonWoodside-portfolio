@@ -8,7 +8,7 @@ interface PageTransitionProps {
 export function PageTransition({ children }: PageTransitionProps) {
     return (
         <motion.div
-            initial={{ opacity: 0, filter: 'blue(8px)' }}
+            initial={{ opacity: 0, filter: 'blur(8px)' }}
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, filter: 'blur(4px)' }}
             transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1]}}
