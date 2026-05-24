@@ -1,13 +1,16 @@
 import { CustomCursor } from './components/cursor/CustomCursor'
+import { Background } from './components/background/Background'
 
 function App() {
   return (
     <>
+      <Background />
       <CustomCursor />
 
       <main
         style={{
-          backgroundColor: '#050505',
+          position: 'relative',
+          zIndex: 10,
           minHeight: '100vh',
           color: '#F5F5F5',
           fontFamily: 'Inter, sans-serif',
@@ -21,7 +24,6 @@ function App() {
           Move your mouse around to test the cursor.
         </p>
 
-        {/* Button — hover state */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A BUTTON
@@ -40,7 +42,6 @@ function App() {
           </button>
         </div>
 
-        {/* Link — link state */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A LINK
@@ -53,7 +54,6 @@ function App() {
           </a>
         </div>
 
-        {/* Project card — project state, shows OPEN */}
         <div style={{ marginBottom: '40px' }}>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             HOVER A PROJECT CARD
@@ -63,7 +63,7 @@ function App() {
             style={{
               width: '400px',
               height: '240px',
-              background: '#0D0D0D',
+              background: 'rgba(13,13,13,0.6)',
               border: '1px solid #1A1A1A',
               borderRadius: '8px',
               display: 'flex',
@@ -77,7 +77,6 @@ function App() {
           </div>
         </div>
 
-        {/* Accent */}
         <div>
           <p style={{ color: '#8A8A8A', marginBottom: '12px', fontSize: '12px' }}>
             ACCENT COLOR
