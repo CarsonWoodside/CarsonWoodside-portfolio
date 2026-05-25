@@ -51,7 +51,7 @@ export function Background() {
 
     // ── Init star field ────────────────────────────────────────────────
     const initStars = () => {
-      const count = Math.floor((canvas.width * canvas.height) / 6000);
+      const count = Math.floor((canvas.width * canvas.height) / 4000);
       starsRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
