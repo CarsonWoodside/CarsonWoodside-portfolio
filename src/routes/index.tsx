@@ -1,14 +1,15 @@
-import { lazy, Suspense } from 'react'
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
+import { useState } from 'react'
+import { createBrowserRouter, RouterProvider, useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Nav } from '../components/layout/Nav'
-import { useLocation } from 'react-router-dom'
 
-const Hero = lazy(() => import('../sections/Hero/Hero'))
-const Projects = lazy(() => import('../sections/Projects/Projects'))
-const About = lazy(() => import('../sections/About/About'))
-const Stack = lazy(() => import('../sections/Stack/Stack'))
-const Contact = lazy(() => import('../sections/Contact/Contact'))
+// Captures the outlet element at mount and never updates, so the exiting
+// instance keeps rendering the old page while AnimatePresence animates it out.
+function AnimatedOutlet() {
+  const outlet = useOutlet()
+  const [frozen] = useState(outlet)
+  return frozen
+}
 
 function Layout() {
   const location = useLocation()
@@ -16,11 +17,9 @@ function Layout() {
   return (
     <>
       <Nav />
-      <Suspense fallback={null}>
-        <AnimatePresence mode="wait">
-          <Outlet key={location.pathname} />
-        </AnimatePresence>
-      </Suspense>
+      <AnimatePresence mode="wait">
+        <AnimatedOutlet key={location.pathname} />
+      </AnimatePresence>
     </>
   )
 }
@@ -30,11 +29,11 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <Hero /> },
-      { path: 'projects', element: <Projects /> },
-      { path: 'about', element: <About /> },
-      { path: 'stack', element: <Stack /> },
-      { path: 'contact', element: <Contact /> },
+      { index: true, lazy: async () => ({ Component: (await import('../sections/Hero/Hero')).default }) },
+      { path: 'projects', lazy: async () => ({ Component: (await import('../sections/Projects/Projects')).default }) },
+      { path: 'about', lazy: async () => ({ Component: (await import('../sections/About/About')).default }) },
+      { path: 'stack', lazy: async () => ({ Component: (await import('../sections/Stack/Stack')).default }) },
+      { path: 'contact', lazy: async () => ({ Component: (await import('../sections/Contact/Contact')).default }) },
     ],
   },
 ])
