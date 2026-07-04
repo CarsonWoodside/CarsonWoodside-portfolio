@@ -43,6 +43,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, lazy: async () => ({ Component: (await import('../sections/Hero/Hero')).default }) },
       { path: 'projects', lazy: async () => ({ Component: (await import('../sections/Projects/Projects')).default }) },
+      { path: 'projects/:slug', lazy: async () => ({ Component: (await import('../sections/CaseStudy/CaseStudy')).default }) },
       { path: 'about', lazy: async () => ({ Component: (await import('../sections/About/About')).default }) },
       { path: 'stack', lazy: async () => ({ Component: (await import('../sections/Stack/Stack')).default }) },
       { path: 'contact', lazy: async () => ({ Component: (await import('../sections/Contact/Contact')).default }) },

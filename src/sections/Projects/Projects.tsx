@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { PageTransition } from '../../components/layout/PageTransition'
 import { projects } from '../../data/projects'
 import './Projects.css'
@@ -90,9 +91,42 @@ export default function Projects() {
                 ))}
               </div>
 
-              {project.link ? (
-                <a className="project-card__link" data-cursor="link" href={project.link}>
-                  OPEN PROJECT
+              {project.caseStudy ? (
+                <div className="project-card__actions">
+                  <Link className="project-card__link" data-cursor="link" to={`/projects/${project.slug}`}>
+                    READ CASE FILE →
+                  </Link>
+                  {project.links?.repo && (
+                    <a
+                      className="project-card__link project-card__link--secondary"
+                      data-cursor="link"
+                      href={project.links.repo}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      SOURCE →
+                    </a>
+                  )}
+                </div>
+              ) : project.links?.live ? (
+                <a
+                  className="project-card__link"
+                  data-cursor="link"
+                  href={project.links.live}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  OPEN LIVE →
+                </a>
+              ) : project.links?.repo ? (
+                <a
+                  className="project-card__link"
+                  data-cursor="link"
+                  href={project.links.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  VIEW SOURCE →
                 </a>
               ) : (
                 <span className="project-card__pending">{project.status}</span>
