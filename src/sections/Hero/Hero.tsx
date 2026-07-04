@@ -99,7 +99,7 @@ export default function Hero() {
       <AnimatePresence>
         {showHero && (
           <PageTransition key="hero">
-            <main className="hero-page">
+            <main className="hero-page" id="main" tabIndex={-1}>
               <section className="hero-fold" aria-labelledby="hero-title">
                 <motion.div
                   initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}

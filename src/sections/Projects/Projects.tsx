@@ -18,7 +18,7 @@ export default function Projects() {
 
   return (
     <PageTransition>
-      <main className="projects-page">
+      <main className="projects-page" id="main" tabIndex={-1}>
         <section className="projects-header" aria-labelledby="projects-title">
           <div>
             <p className="projects-kicker">ARCHIVE / SELECTED BUILDS</p>

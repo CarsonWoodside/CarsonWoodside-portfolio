@@ -25,7 +25,7 @@
   padding: 16px 18px;
   border-bottom: 1px solid var(--bb-border);
   color: var(--bb-accent);
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--bb-font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
 }

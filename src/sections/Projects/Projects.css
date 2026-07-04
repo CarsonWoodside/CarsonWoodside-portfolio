@@ -3,7 +3,7 @@
   z-index: 10;
   min-height: 100vh;
   color: var(--bb-text);
-  font-family: Inter, sans-serif;
+  font-family: var(--bb-font-sans);
   padding: 132px clamp(24px, 7vw, 80px) 80px;
 }
 

@@ -16,6 +16,9 @@ function Layout() {
 
   return (
     <>
+      <a className="skip-link" href="#main">
+        SKIP TO CONTENT
+      </a>
       <Nav />
       <AnimatePresence mode="wait">
         <AnimatedOutlet key={location.pathname} />
@@ -34,6 +37,7 @@ const router = createBrowserRouter([
       { path: 'about', lazy: async () => ({ Component: (await import('../sections/About/About')).default }) },
       { path: 'stack', lazy: async () => ({ Component: (await import('../sections/Stack/Stack')).default }) },
       { path: 'contact', lazy: async () => ({ Component: (await import('../sections/Contact/Contact')).default }) },
+      { path: '*', lazy: async () => ({ Component: (await import('../sections/NotFound/NotFound')).default }) },
     ],
   },
 ])

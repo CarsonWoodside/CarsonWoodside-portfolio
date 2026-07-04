@@ -3,7 +3,7 @@
   z-index: 10;
   min-height: 100vh;
   color: var(--bb-text);
-  font-family: Inter, sans-serif;
+  font-family: var(--bb-font-sans);
   display: flex;
   flex-direction: column;
 }
@@ -20,7 +20,7 @@
 
 .boot-terminal {
   width: min(100%, 360px);
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--bb-font-mono);
   font-size: 14px;
   letter-spacing: 0.08em;
   line-height: 2;
@@ -111,7 +111,7 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.15em;
-  font-family: Inter, sans-serif;
+  font-family: var(--bb-font-sans);
   transition:
     border-color 0.2s ease,
     color 0.2s ease,
