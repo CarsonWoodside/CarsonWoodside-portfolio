@@ -27,6 +27,10 @@ interface ShootingStar {
   maxLife: number;
 }
 
+const MAX_STARS = 320;
+const CONSTELLATION_RADIUS = 160;
+const LINK_DISTANCE = 100;
+
 export function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
@@ -42,16 +46,12 @@ export function Background() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // ── Resize ─────────────────────────────────────────────────────────
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initStars();
-    };
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let running = false;
 
     // ── Init star field ────────────────────────────────────────────────
     const initStars = () => {
-      const count = Math.floor((canvas.width * canvas.height) / 4000);
+      const count = Math.min(MAX_STARS, Math.floor((canvas.width * canvas.height) / 5000));
       starsRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -84,45 +84,48 @@ export function Background() {
     };
 
     // ── Update constellation lines based on mouse ──────────────────────
+    // Collect the stars near the mouse first (cheap box check before the
+    // sqrt), then only pair within that small subset instead of all stars.
     const updateConstellation = () => {
       const mouse = mouseRef.current;
       const stars = starsRef.current;
-      const radius = 160;
       const lines: ConstellationLine[] = [];
 
-      stars.forEach((star, i) => {
-        const dx = star.x - mouse.x;
-        const dy = star.y - mouse.y;
-        const distToMouse = Math.sqrt(dx * dx + dy * dy);
+      const near: { index: number; dist: number }[] = [];
+      for (let i = 0; i < stars.length; i++) {
+        const dx = stars[i].x - mouse.x;
+        const dy = stars[i].y - mouse.y;
+        if (dx > CONSTELLATION_RADIUS || dx < -CONSTELLATION_RADIUS) continue;
+        if (dy > CONSTELLATION_RADIUS || dy < -CONSTELLATION_RADIUS) continue;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONSTELLATION_RADIUS) near.push({ index: i, dist });
+      }
 
-        if (distToMouse < radius) {
-          // Connect this star to nearby stars
-          stars.forEach((other, j) => {
-            if (j <= i) return;
-            const ddx = star.x - other.x;
-            const ddy = star.y - other.y;
-            const distBetween = Math.sqrt(ddx * ddx + ddy * ddy);
+      for (let a = 0; a < near.length; a++) {
+        for (let b = a + 1; b < near.length; b++) {
+          const from = stars[near[a].index];
+          const to = stars[near[b].index];
+          const ddx = from.x - to.x;
+          const ddy = from.y - to.y;
+          if (ddx > LINK_DISTANCE || ddx < -LINK_DISTANCE) continue;
+          if (ddy > LINK_DISTANCE || ddy < -LINK_DISTANCE) continue;
+          const distBetween = Math.sqrt(ddx * ddx + ddy * ddy);
 
-            const otherDx = other.x - mouse.x;
-            const otherDy = other.y - mouse.y;
-            const otherDistToMouse = Math.sqrt(otherDx * otherDx + otherDy * otherDy);
-
-            if (distBetween < 100 && otherDistToMouse < radius) {
-              const fade =
-                (1 - distToMouse / radius) *
-                (1 - otherDistToMouse / radius) *
-                (1 - distBetween / 100);
-              lines.push({ fromIndex: i, toIndex: j, opacity: fade });
-            }
-          });
+          if (distBetween < LINK_DISTANCE) {
+            const fade =
+              (1 - near[a].dist / CONSTELLATION_RADIUS) *
+              (1 - near[b].dist / CONSTELLATION_RADIUS) *
+              (1 - distBetween / LINK_DISTANCE);
+            lines.push({ fromIndex: near[a].index, toIndex: near[b].index, opacity: fade });
+          }
         }
-      });
+      }
 
       constellationLinesRef.current = lines;
     };
 
-    // ── Main draw loop ─────────────────────────────────────────────────
-    const draw = () => {
+    // ── Draw one frame; `animated` also advances the simulation ─────────
+    const drawFrame = (animated: boolean) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Background gradient
@@ -155,17 +158,19 @@ export function Background() {
 
       // ── Draw stars ───────────────────────────────────────────────────
       stars.forEach((star) => {
-        // Twinkle
-        if (Math.abs(star.opacity - star.targetOpacity) < 0.01) {
-          star.targetOpacity = Math.random();
-        }
-        star.opacity += (star.targetOpacity - star.opacity) * star.twinkleSpeed;
+        if (animated) {
+          // Twinkle
+          if (Math.abs(star.opacity - star.targetOpacity) < 0.01) {
+            star.targetOpacity = Math.random();
+          }
+          star.opacity += (star.targetOpacity - star.opacity) * star.twinkleSpeed;
 
-        // Drift upward
-        star.y -= star.driftSpeed;
-        if (star.y < 0) {
-          star.y = canvas.height;
-          star.x = Math.random() * canvas.width;
+          // Drift upward
+          star.y -= star.driftSpeed;
+          if (star.y < 0) {
+            star.y = canvas.height;
+            star.x = Math.random() * canvas.width;
+          }
         }
 
         const alpha = Math.max(0, Math.min(1, star.opacity));
@@ -204,6 +209,8 @@ export function Background() {
           ctx.stroke();
         }
       });
+
+      if (!animated) return;
 
       // ── Draw shooting stars ──────────────────────────────────────────
       shootingStarsRef.current = shootingStarsRef.current.filter((s) => {
@@ -251,7 +258,42 @@ export function Background() {
       }
 
       updateConstellation();
-      animFrameRef.current = requestAnimationFrame(draw);
+    };
+
+    const loop = () => {
+      drawFrame(true);
+      if (running) animFrameRef.current = requestAnimationFrame(loop);
+    };
+
+    const startLoop = () => {
+      if (running || reducedMotionQuery.matches || document.hidden) return;
+      running = true;
+      animFrameRef.current = requestAnimationFrame(loop);
+    };
+
+    const stopLoop = () => {
+      running = false;
+      cancelAnimationFrame(animFrameRef.current);
+    };
+
+    // Reduced motion keeps the atmosphere as a single static frame.
+    const renderMode = () => {
+      stopLoop();
+      if (reducedMotionQuery.matches) {
+        constellationLinesRef.current = [];
+        shootingStarsRef.current = [];
+        drawFrame(false);
+      } else {
+        startLoop();
+      }
+    };
+
+    // ── Resize ─────────────────────────────────────────────────────────
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initStars();
+      if (reducedMotionQuery.matches) drawFrame(false);
     };
 
     // ── Mouse tracking ─────────────────────────────────────────────────
@@ -263,18 +305,27 @@ export function Background() {
       mouseRef.current = { x: -9999, y: -9999 };
     };
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) stopLoop();
+      else renderMode();
+    };
+
     resize();
-    draw();
+    renderMode();
 
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    reducedMotionQuery.addEventListener("change", renderMode);
 
     return () => {
-      cancelAnimationFrame(animFrameRef.current);
+      stopLoop();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      reducedMotionQuery.removeEventListener("change", renderMode);
     };
   }, []);
 
