@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createBrowserRouter, RouterProvider, useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Nav } from '../components/layout/Nav'
@@ -20,6 +20,18 @@ function Layout() {
   const openPalette = useCallback(() => setPaletteOpen(true), [])
   const closePalette = useCallback(() => setPaletteOpen(false), [])
   const paletteContext = useMemo(() => ({ openPalette }), [openPalette])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setPaletteOpen((open) => !open)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <CommandPaletteContext.Provider value={paletteContext}>

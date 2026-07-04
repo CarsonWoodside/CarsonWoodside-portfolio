@@ -39,9 +39,50 @@
   padding: 4px;
 }
 
+.command-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--bb-border);
+}
+
+.command-prompt {
+  color: var(--bb-accent);
+  font-family: var(--bb-font-mono);
+  font-size: 13px;
+}
+
+.command-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bb-text);
+  font-family: var(--bb-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  outline: none;
+}
+
+.command-input::placeholder {
+  color: #3f3f3f;
+}
+
 .command-list {
   display: grid;
   padding: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.command-empty {
+  color: #3f3f3f;
+  font-family: var(--bb-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  margin: 0;
+  padding: 14px 12px;
 }
 
 .command-item {
@@ -52,13 +93,19 @@
   padding: 14px 12px;
   color: var(--bb-text);
   text-decoration: none;
+  text-align: left;
+  font: inherit;
+  background: transparent;
   border: 1px solid transparent;
 }
 
-.command-item:hover,
-.command-item:focus-visible {
+.command-item--active {
   border-color: var(--bb-border);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 224, 255, 0.06);
+}
+
+.command-item--active .command-index {
+  color: var(--bb-accent);
 }
 
 .command-index,
