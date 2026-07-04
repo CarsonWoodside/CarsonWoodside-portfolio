@@ -13,6 +13,8 @@ export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
     const move = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -55,7 +57,7 @@ export function CustomCursor() {
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [cursorX, cursorY]);
 
   const sizeMap: Record<CursorMode, number> = {
     default: 12,

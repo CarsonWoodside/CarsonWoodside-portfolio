@@ -1,183 +1,175 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { PageTransition } from '../../components/layout/PageTransition'
+import { CommandPalette } from '../../components/terminal/CommandPalette'
+import { featuredProjects } from '../../data/projects'
+import './Hero.css'
 
-// This code is AI and used only for testing content on page.
+const BOOT_LINES = [
+  'INITIALISING BLACK BOX...',
+  'LOADING SYSTEMS...',
+  'FETCHING PROJECT DATA...',
+  'READY',
+]
+
+const TYPING_SPEED = 40
+const LINE_PAUSE = 300
+const END_PAUSE = 900
+const SESSION_KEY = 'bb_booted'
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion()
+  const alreadyBooted = useMemo(() => {
+    return sessionStorage.getItem(SESSION_KEY) === 'true' || prefersReducedMotion
+  }, [prefersReducedMotion])
+
+  const [bootDone, setBootDone] = useState(alreadyBooted)
+  const [showHero, setShowHero] = useState(alreadyBooted)
+  const [currentLine, setCurrentLine] = useState(0)
+  const [currentText, setCurrentText] = useState('')
+  const [completedLines, setCompletedLines] = useState<string[]>([])
+  const [showCursor, setShowCursor] = useState(true)
+  const [terminalOpen, setTerminalOpen] = useState(false)
+
+  const closeTerminal = useCallback(() => setTerminalOpen(false), [])
+
+  useEffect(() => {
+    if (bootDone) return
+    const blink = window.setInterval(() => setShowCursor((visible) => !visible), 530)
+    return () => window.clearInterval(blink)
+  }, [bootDone])
+
+  useEffect(() => {
+    if (alreadyBooted) return
+    if (currentLine >= BOOT_LINES.length) {
+      const timeout = window.setTimeout(() => {
+        setBootDone(true)
+        sessionStorage.setItem(SESSION_KEY, 'true')
+        window.setTimeout(() => setShowHero(true), 600)
+      }, END_PAUSE)
+      return () => window.clearTimeout(timeout)
+    }
+
+    const target = BOOT_LINES[currentLine]
+    if (currentText.length < target.length) {
+      const timeout = window.setTimeout(() => {
+        setCurrentText(target.slice(0, currentText.length + 1))
+      }, TYPING_SPEED)
+      return () => window.clearTimeout(timeout)
+    }
+
+    const timeout = window.setTimeout(() => {
+      setCompletedLines((previousLines) => [...previousLines, target])
+      setCurrentText('')
+      setCurrentLine((previousLine) => previousLine + 1)
+    }, LINE_PAUSE)
+    return () => window.clearTimeout(timeout)
+  }, [currentLine, currentText, alreadyBooted])
+
   return (
-    <PageTransition>
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          minHeight: '100vh',
-          color: '#F5F5F5',
-          fontFamily: 'Inter, sans-serif',
-          padding: '140px 80px 80px',
-        }}
-      >
-        <div style={{ maxWidth: '900px', marginBottom: '80px' }}>
-          <p style={{ color: '#00E0FF', fontSize: '11px', letterSpacing: '0.3em', marginBottom: '24px' }}>
-            INITIALIZING BLACK BOX — READY
-          </p>
-          <h1
-            style={{
-              fontSize: 'clamp(48px, 8vw, 96px)',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.05,
-              marginBottom: '32px',
-            }}
+    <>
+      <AnimatePresence>
+        {!bootDone && (
+          <motion.div
+            className="boot-screen"
+            key="boot"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.6 } }}
           >
-            CARSON
-            <br />
-            WOODSIDE
-          </h1>
-          <h2
-            style={{
-              fontSize: 'clamp(20px, 3vw, 32px)',
-              fontWeight: 300,
-              color: '#8A8A8A',
-              letterSpacing: '0.02em',
-              marginBottom: '32px',
-            }}
-          >
-            Frontend Engineer &amp; Interactive Systems Designer
-          </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              color: '#8A8A8A',
-              lineHeight: 1.7,
-              maxWidth: '520px',
-              marginBottom: '48px',
-            }}
-          >
-            Building immersive digital experiences through code, motion, and systems thinking.
-            Based in the UK, focused on the intersection of engineering and design.
-          </p>
-
-          {/* Buttons */}
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <button
-              style={{
-                background: '#00E0FF',
-                border: 'none',
-                color: '#050505',
-                padding: '14px 32px',
-                fontSize: '12px',
-                fontWeight: 700,
-                letterSpacing: '0.15em',
-                fontFamily: 'Inter, sans-serif',
-              }}
-            >
-              VIEW PROJECTS
-            </button>
-            <button
-              style={{
-                background: 'transparent',
-                border: '1px solid #1A1A1A',
-                color: '#8A8A8A',
-                padding: '14px 32px',
-                fontSize: '12px',
-                fontWeight: 500,
-                letterSpacing: '0.15em',
-                fontFamily: 'Inter, sans-serif',
-              }}
-            >
-              OPEN TERMINAL
-            </button>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div style={{ borderTop: '1px solid #1A1A1A', marginBottom: '80px' }} />
-
-        {/* Stats row */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '40px',
-            marginBottom: '80px',
-            maxWidth: '800px',
-          }}
-        >
-          {[
-            { value: '7.6B', label: 'RL TRAINING STEPS' },
-            { value: '3+', label: 'YEARS BUILDING' },
-            { value: '10+', label: 'PROJECTS SHIPPED' },
-            { value: '∞', label: 'BUGS FIXED' },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <p style={{ fontSize: '32px', fontWeight: 700, color: '#F5F5F5', marginBottom: '8px' }}>
-                {stat.value}
-              </p>
-              <p style={{ fontSize: '10px', color: '#8A8A8A', letterSpacing: '0.2em' }}>
-                {stat.label}
-              </p>
+            <div className="boot-terminal" aria-live="polite">
+              {completedLines.map((line) => (
+                <div className="boot-line" key={line}>
+                  <span className="boot-prompt">&gt;</span>
+                  {line}
+                </div>
+              ))}
+              {currentLine < BOOT_LINES.length && (
+                <div>
+                  <span className="boot-prompt">&gt;</span>
+                  <span>{currentText}</span>
+                  <span className="boot-cursor" style={{ opacity: showCursor ? 1 : 0 }} />
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* Divider */}
-        <div style={{ borderTop: '1px solid #1A1A1A', marginBottom: '80px' }} />
+      <AnimatePresence>
+        {showHero && (
+          <PageTransition key="hero">
+            <main className="hero-page">
+              <section className="hero-fold" aria-labelledby="hero-title">
+                <motion.div
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.1 }}
+                >
+                  <p className="hero-kicker">SYSTEM ONLINE - READY</p>
 
-        <div style={{ marginBottom: '80px' }}>
-          <p style={{ color: '#8A8A8A', fontSize: '11px', letterSpacing: '0.3em', marginBottom: '40px' }}>
-            SELECTED WORK
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
-            {[
-              { id: '01', title: 'BLINDSIDE TRACKER', type: 'WEB / FULL STACK', year: '2025' },
-              { id: '02', title: 'RLBOT AI SYSTEM', type: 'AI / SIMULATION', year: '2024' },
-              { id: '03', title: 'THE FASTEST SECTOR', type: 'WEB / DATA', year: '2024' },
-              { id: '04', title: 'BLACK BOX PORTFOLIO', type: 'WEB / CREATIVE DEV', year: '2025' },
-            ].map((project) => (
-              <div
-                key={project.id}
-                data-cursor="project"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '60px 1fr 200px 80px',
-                  alignItems: 'center',
-                  padding: '24px 0',
-                  borderTop: '1px solid #1A1A1A',
-                  gap: '24px',
-                }}
-              >
-                <span style={{ fontSize: '11px', color: '#1A1A1A', fontWeight: 700 }}>
-                  {project.id}
-                </span>
-                <span style={{ fontSize: '18px', fontWeight: 600, letterSpacing: '0.05em' }}>
-                  {project.title}
-                </span>
-                <span style={{ fontSize: '11px', color: '#8A8A8A', letterSpacing: '0.15em' }}>
-                  {project.type}
-                </span>
-                <span style={{ fontSize: '11px', color: '#8A8A8A', textAlign: 'right' }}>
-                  {project.year}
-                </span>
+                  <h1 className="hero-title" id="hero-title">
+                    CARSON
+                    <br />
+                    <span>WOODSIDE</span>
+                  </h1>
+
+                  <p className="hero-role">Frontend Engineer &amp; Interactive Systems Designer</p>
+                  <p className="hero-summary">
+                    Building immersive digital experiences through code, motion, and systems
+                    thinking.
+                  </p>
+
+                  <div className="hero-actions">
+                    <Link className="hero-button hero-button--primary" data-cursor="link" to="/projects">
+                      VIEW PROJECTS
+                    </Link>
+                    <button
+                      className="hero-button"
+                      data-cursor="hover"
+                      type="button"
+                      onClick={() => setTerminalOpen(true)}
+                    >
+                      OPEN TERMINAL
+                    </button>
+                  </div>
+                </motion.div>
+              </section>
+
+              <section className="hero-work" aria-labelledby="selected-work-title">
+                <p className="hero-section-label" id="selected-work-title">
+                  SELECTED WORK
+                </p>
+
+                <div className="project-list">
+                  {featuredProjects.map((project) => (
+                    <Link
+                      className="project-row"
+                      data-cursor="project"
+                      key={project.slug}
+                      to={`/projects#${project.slug}`}
+                      aria-label={`Open ${project.title}`}
+                    >
+                      <span className="project-row__id">{project.id}</span>
+                      <span className="project-row__title">{project.title}</span>
+                      <span className="project-row__type">{project.type}</span>
+                      <span className="project-row__year">{project.year}</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+
+              <div className="hero-status" aria-label="Current status">
+                <span>BELFAST, NORTHERN IRELAND</span>
+                <span className="hero-status__availability">OPEN TO WORK</span>
+                <span>2025</span>
               </div>
-            ))}
-            <div style={{ borderTop: '1px solid #1A1A1A' }} />
-          </div>
-        </div>
+            </main>
+          </PageTransition>
+        )}
+      </AnimatePresence>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <p style={{ fontSize: '11px', color: '#1A1A1A', letterSpacing: '0.2em' }}>
-            SYSTEM STATUS: ONLINE
-          </p>
-          <p style={{ fontSize: '11px', color: '#1A1A1A', letterSpacing: '0.2em' }}>
-            MANCHESTER, UK
-          </p>
-        </div>
-      </div>
-    </PageTransition>
+      <CommandPalette open={terminalOpen} onClose={closeTerminal} />
+    </>
   )
 }

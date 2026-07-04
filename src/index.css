@@ -10,4 +10,43 @@
   --bb-accent-hover: #66ECFF;
 }
 
-* { cursor: none; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bb-bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bb-bg);
+}
+
+a,
+button {
+  cursor: none;
+}
+
+button {
+  border-radius: 0;
+}
+
+:focus-visible {
+  outline: 1px solid var(--bb-accent);
+  outline-offset: 4px;
+}
+
+@media (pointer: fine) {
+  * {
+    cursor: none;
+  }
+}
+
+@media (pointer: coarse) {
+  a,
+  button {
+    cursor: pointer;
+  }
+}

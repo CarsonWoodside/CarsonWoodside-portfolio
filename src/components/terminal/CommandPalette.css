@@ -1,0 +1,89 @@
+.command-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 104px 20px 20px;
+  background: rgba(5, 5, 5, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.command-panel {
+  width: min(100%, 560px);
+  border: 1px solid var(--bb-border);
+  background: rgba(8, 8, 8, 0.94);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--bb-border);
+  color: var(--bb-accent);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.command-close {
+  border: 0;
+  background: transparent;
+  color: var(--bb-muted);
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 4px;
+}
+
+.command-list {
+  display: grid;
+  padding: 10px;
+}
+
+.command-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 12px;
+  color: var(--bb-text);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.command-item:hover,
+.command-item:focus-visible {
+  border-color: var(--bb-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.command-index,
+.command-key {
+  color: #3f3f3f;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.command-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 620px) {
+  .command-backdrop {
+    padding-top: 88px;
+  }
+
+  .command-item {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .command-key {
+    display: none;
+  }
+}
