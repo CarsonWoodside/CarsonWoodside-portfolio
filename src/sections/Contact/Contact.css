@@ -1,0 +1,139 @@
+.contact-page {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--bb-text);
+  font-family: var(--bb-font-sans);
+  padding: 132px clamp(24px, 7vw, 80px) 80px;
+}
+
+.contact-kicker {
+  color: var(--bb-accent);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  margin: 0 0 28px;
+}
+
+.contact-title {
+  font-size: clamp(48px, 8vw, 104px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 0 0 28px;
+}
+
+.contact-intro {
+  max-width: 540px;
+  color: var(--bb-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 64px;
+}
+
+.contact-channels {
+  display: grid;
+  border-bottom: 1px solid var(--bb-border);
+  margin-bottom: 48px;
+}
+
+.contact-channel {
+  display: grid;
+  grid-template-columns: 48px 140px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 0;
+  border-top: 1px solid var(--bb-border);
+  color: var(--bb-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.contact-channel:hover,
+.contact-channel:focus-visible {
+  opacity: 0.58;
+}
+
+.contact-channel__index {
+  color: #3f3f3f;
+  font-family: var(--bb-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.contact-channel__protocol {
+  font-size: clamp(16px, 2.6vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.contact-channel__value {
+  color: var(--bb-muted);
+  font-family: var(--bb-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  overflow-wrap: anywhere;
+}
+
+.contact-channel__arrow {
+  color: var(--bb-accent);
+  text-align: right;
+}
+
+.contact-meta {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.contact-meta div {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 20px;
+  align-items: baseline;
+}
+
+.contact-meta dt {
+  color: #3f3f3f;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+}
+
+.contact-meta dd {
+  margin: 0;
+  color: var(--bb-muted);
+  font-family: var(--bb-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.contact-meta .contact-meta__status {
+  color: var(--bb-accent);
+}
+
+@media (max-width: 640px) {
+  .contact-page {
+    padding-top: 120px;
+  }
+
+  .contact-channel {
+    grid-template-columns: 34px minmax(0, 1fr) 32px;
+    gap: 8px 14px;
+  }
+
+  .contact-channel__value {
+    grid-column: 2;
+  }
+
+  .contact-channel__arrow {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-channel {
+    transition: none;
+  }
+}
