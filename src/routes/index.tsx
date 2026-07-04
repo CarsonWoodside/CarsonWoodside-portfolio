@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { createBrowserRouter, RouterProvider, useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Nav } from '../components/layout/Nav'
+import { Footer } from '../components/layout/Footer'
+import { CommandPalette } from '../components/terminal/CommandPalette'
+import { CommandPaletteContext } from '../components/terminal/CommandPaletteContext'
 
 // Captures the outlet element at mount and never updates, so the exiting
 // instance keeps rendering the old page while AnimatePresence animates it out.
@@ -13,9 +16,13 @@ function AnimatedOutlet() {
 
 function Layout() {
   const location = useLocation()
+  const [paletteOpen, setPaletteOpen] = useState(false)
+  const openPalette = useCallback(() => setPaletteOpen(true), [])
+  const closePalette = useCallback(() => setPaletteOpen(false), [])
+  const paletteContext = useMemo(() => ({ openPalette }), [openPalette])
 
   return (
-    <>
+    <CommandPaletteContext.Provider value={paletteContext}>
       <a className="skip-link" href="#main">
         SKIP TO CONTENT
       </a>
@@ -23,7 +30,9 @@ function Layout() {
       <AnimatePresence mode="wait">
         <AnimatedOutlet key={location.pathname} />
       </AnimatePresence>
-    </>
+      {location.pathname !== '/' && <Footer />}
+      <CommandPalette open={paletteOpen} onClose={closePalette} />
+    </CommandPaletteContext.Provider>
   )
 }
 

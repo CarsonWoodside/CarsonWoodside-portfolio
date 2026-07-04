@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { PageTransition } from '../../components/layout/PageTransition'
-import { CommandPalette } from '../../components/terminal/CommandPalette'
+import { useCommandPalette } from '../../components/terminal/CommandPaletteContext'
 import { featuredProjects } from '../../data/projects'
 import './Hero.css'
 
@@ -30,9 +30,7 @@ export default function Hero() {
   const [currentText, setCurrentText] = useState('')
   const [completedLines, setCompletedLines] = useState<string[]>([])
   const [showCursor, setShowCursor] = useState(true)
-  const [terminalOpen, setTerminalOpen] = useState(false)
-
-  const closeTerminal = useCallback(() => setTerminalOpen(false), [])
+  const { openPalette } = useCommandPalette()
 
   useEffect(() => {
     if (bootDone) return
@@ -128,7 +126,7 @@ export default function Hero() {
                       className="hero-button"
                       data-cursor="hover"
                       type="button"
-                      onClick={() => setTerminalOpen(true)}
+                      onClick={openPalette}
                     >
                       OPEN TERMINAL
                     </button>
@@ -168,8 +166,6 @@ export default function Hero() {
           </PageTransition>
         )}
       </AnimatePresence>
-
-      <CommandPalette open={terminalOpen} onClose={closeTerminal} />
     </>
   )
 }
