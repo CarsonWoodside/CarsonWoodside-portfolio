@@ -8,7 +8,6 @@ const Hero = lazy(() => import('../sections/Hero/Hero'))
 const Projects = lazy(() => import('../sections/Projects/Projects'))
 const About = lazy(() => import('../sections/About/About'))
 const Stack = lazy(() => import('../sections/Stack/Stack'))
-const Lab = lazy(() => import('../sections/Lab/Lab'))
 const Contact = lazy(() => import('../sections/Contact/Contact'))
 
 function Layout() {
@@ -35,7 +34,6 @@ const router = createBrowserRouter([
       { path: 'projects', element: <Projects /> },
       { path: 'about', element: <About /> },
       { path: 'stack', element: <Stack /> },
-      { path: 'lab', element: <Lab /> },
       { path: 'contact', element: <Contact /> },
     ],
   },

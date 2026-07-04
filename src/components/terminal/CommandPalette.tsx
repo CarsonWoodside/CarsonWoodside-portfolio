@@ -12,7 +12,6 @@ const commands = [
   { label: 'VIEW PROJECTS', to: '/projects', key: 'PROJECTS' },
   { label: 'READ ABOUT', to: '/about', key: 'ABOUT' },
   { label: 'INSPECT STACK', to: '/stack', key: 'STACK' },
-  { label: 'OPEN LAB', to: '/lab', key: 'LAB' },
   { label: 'CONTACT', to: '/contact', key: 'CONTACT' },
 ]
 
