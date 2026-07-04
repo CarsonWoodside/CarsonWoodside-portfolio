@@ -160,7 +160,7 @@ export default function Hero() {
               <div className="hero-status" aria-label="Current status">
                 <span>BELFAST, NORTHERN IRELAND</span>
                 <span className="hero-status__availability">OPEN TO WORK</span>
-                <span>2025</span>
+                <span>{new Date().getFullYear()}</span>
               </div>
             </main>
           </PageTransition>

@@ -1,6 +1,6 @@
-# Carson Woodside - Portfolio
+# Carson Woodside — Portfolio (Black Box)
 
-> A cinematic, interactive personal portfolio built to feel like a premium product.
+> A cinematic, interactive personal portfolio built like a flight recorder: near-black surfaces, one cyan signal, monospace telemetry.
 
 ---
 
@@ -8,25 +8,24 @@
 
 | Layer | Tech |
 |---|---|
-| Framework | React + Vite + TypeScript |
-| Styling | Tailwind CSS |
-| Animation | Framer Motion + GSAP |
-| Smooth Scroll | Lenis |
-| 3D | Three.js + React Three Fiber |
-| Routing | React Router v6 |
-| Sound | Howler.js |
-| Icons | Lucide React |
-| Data fetching | TanStack Query |
-| Deploy | Vercel |
+| Framework | React 19 + Vite + TypeScript |
+| Styling | CSS with design tokens (+ Tailwind preflight) |
+| Animation | Framer Motion + Canvas API |
+| Routing | React Router v7 (data router, route-level lazy) |
+| Fonts | Inter Variable + JetBrains Mono Variable (Fontsource) |
+| Deploy | Vercel (SPA rewrites via `vercel.json`) |
 
 ---
 
 ## Features
 
-- **Animated star field background** - twinkling stars with slow upward drift and cross sparkles on bright stars
-- **Constellation drawing** - stars near the cursor connect with faint lines on mouse movement
-- **Shooting stars** - random shooting stars streak across the screen every few seconds
-- **Custom cursor** - four states: default dot, hover ring, link glow, project OPEN label
+- **Boot sequence** — typed terminal boot on first visit (session-gated, reduced-motion aware)
+- **Animated star field** — canvas layer with twinkle, drift, cursor constellations, and shooting stars; renders a static frame under `prefers-reduced-motion` and pauses on hidden tabs
+- **Custom cursor** — four spring-physics states (dot, hover ring, link glow, project OPEN label), disabled on touch
+- **Route transitions** — true exit animations via a frozen-outlet pattern with AnimatePresence
+- **Command palette** — Ctrl/Cmd+K anywhere: fuzzy filter, arrow-key navigation, every route plus email/GitHub; doubles as the mobile menu
+- **Case files** — data-driven project case studies at `/projects/:slug`
+- **A11y** — skip link, focus-visible states, focus return, one `h1` per page, `aria-current` nav
 
 ---
 
@@ -47,15 +46,39 @@
 ## Getting Started
 
 ```bash
-# Install dependencies
-npm install
-
-# Run dev server
-npm run dev
-
-# Build for production
-npm run build
+npm install       # install dependencies
+npm run dev       # dev server
+npm run lint      # eslint
+npm run build     # typecheck + production build
+npm run preview   # serve the production build locally
 ```
+
+---
+
+## Structure
+
+```
+src/
+  components/   layout (Nav, Footer, PageTransition), cursor, background, terminal (palette)
+  data/         all editable content: profile.ts, projects.ts, stack.ts, about.ts
+  routes/       router, Layout, frozen-outlet transition wiring
+  sections/     one folder per page (Hero, Projects, CaseStudy, About, Stack, Contact, NotFound)
+```
+
+All content is edited in `src/data/` — no page markup changes needed for copy updates.
+
+---
+
+## Content TODO (before sharing widely)
+
+- [ ] LinkedIn URL → `src/data/profile.ts`
+- [ ] CV PDF → `public/cv/carson-woodside-cv.pdf` + `profile.cvUrl`
+- [ ] Real bio paragraphs (replace `[DRAFT]`) → `src/data/about.ts`
+- [ ] Verify stack list / add `since` years → `src/data/stack.ts`
+- [ ] Repo/live links for remaining projects → `src/data/projects.ts`
+- [ ] Screenshots for the Black Box case study → `public/projects/black-box-portfolio/`
+- [ ] Replace `[DRAFT]` outcome metrics in the Black Box case study after deploy
+- [ ] `og:url` + `og:image` in `index.html` once the deploy URL exists
 
 ---
 
