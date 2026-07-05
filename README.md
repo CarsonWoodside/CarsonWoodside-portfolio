@@ -69,19 +69,6 @@ All content is edited in `src/data/` — no page markup changes needed for copy 
 
 ---
 
-## Content TODO (before sharing widely)
-
-- [ ] LinkedIn URL → `src/data/profile.ts`
-- [ ] CV PDF → `public/cv/carson-woodside-cv.pdf` + `profile.cvUrl`
-- [ ] Real bio paragraphs (replace `[DRAFT]`) → `src/data/about.ts`
-- [ ] Verify stack list / add `since` years → `src/data/stack.ts`
-- [ ] Repo/live links for remaining projects → `src/data/projects.ts`
-- [ ] Screenshots for the Black Box case study → `public/projects/black-box-portfolio/`
-- [ ] Replace `[DRAFT]` outcome metrics in the Black Box case study after deploy
-- [ ] `og:url` + `og:image` in `index.html` once the deploy URL exists
-
----
-
 ## Branch Strategy
 
 ```
