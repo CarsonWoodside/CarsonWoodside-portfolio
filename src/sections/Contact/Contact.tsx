@@ -45,7 +45,7 @@ export default function Contact() {
             CONTACT
           </h1>
           <p className="contact-intro">
-            Currently open to frontend and design engineering roles. The fastest channel is email —
+            Currently open to frontend and design engineering roles. The fastest channel is email -
             every message gets a reply.
           </p>
         </section>

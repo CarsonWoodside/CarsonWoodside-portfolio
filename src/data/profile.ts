@@ -6,8 +6,8 @@ export const profile = {
   email: 'carson.woodside@gmail.com',
   github: 'https://github.com/CarsonWoodside',
   // [NEEDS CONTENT] add your LinkedIn profile URL to enable the LinkedIn links
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/carson-woodside/',
   // [NEEDS CONTENT] drop your CV at public/cv/carson-woodside-cv.pdf and set
   // this to '/cv/carson-woodside-cv.pdf' to enable the CV download links
-  cvUrl: '',
+  cvUrl: '/cv/carson-woodside-cv.pdf',
 }

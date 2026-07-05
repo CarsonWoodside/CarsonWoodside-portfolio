@@ -1,12 +1,9 @@
-// [NEEDS CONTENT] Replace the [DRAFT] paragraphs below with your real bio —
-// who you are, what you build, and why. Keep it to 2–3 short paragraphs.
-
 export const aboutBio: string[] = [
-  '[DRAFT] I’m Carson Woodside, a web developer and designer based in Belfast. I build interfaces where motion, atmosphere, and interaction are part of the product — not decoration on top of it.',
-  '[DRAFT] My work sits between engineering and design: component systems in React and TypeScript on one side, type, spacing, and animation decisions on the other. I care about the details users feel but never consciously notice.',
-  '[DRAFT] Right now I’m looking for a role where I can ship polished, motion-driven front ends as part of a team that takes craft seriously.',
+  "I'm Carson Woodside, a Computer Science student based in Belfast with a passion for building software that's both functional and enjoyable to use. I enjoy turning ideas into polished web applications, combining modern frontend technologies with thoughtful design and attention to detail.",
+  "Most of my work is built with React, TypeScript and modern web tooling, but I'm always exploring new areas-from AI and automation to ethical hacking and software engineering. Whether I'm creating personal projects, experimenting with new technologies, or refining user experiences, I'm constantly looking for opportunities to learn and improve.",
+  "Outside of development you'll usually find me behind a camera photographing architecture and landscapes, following Formula 1, or working towards new fitness goals. I'm currently looking for opportunities where I can contribute, keep learning from experienced developers, and build software that makes a real impact.",
 ]
 
-// [NEEDS CONTENT] Optional portrait — drop an image in public/ (e.g.
+// [NEEDS CONTENT] Optional portrait - drop an image in public/ (e.g.
 // /about/portrait.jpg) and set this to its path to show it on the About page.
-export const aboutPhotoSrc = ''
+export const aboutPhotoSrc = '/about/portrait.JPG'
