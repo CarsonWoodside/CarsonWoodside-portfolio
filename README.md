@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# Carson Woodside — Portfolio (Black Box)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A cinematic, interactive personal portfolio built like a flight recorder: near-black surfaces, one cyan signal, monospace telemetry.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+| Layer | Tech |
+|---|---|
+| Framework | React 19 + Vite + TypeScript |
+| Styling | CSS with design tokens (+ Tailwind preflight) |
+| Animation | Framer Motion + Canvas API |
+| Routing | React Router v7 (data router, route-level lazy) |
+| Fonts | Inter Variable + JetBrains Mono Variable (Fontsource) |
+| Deploy | Vercel (SPA rewrites via `vercel.json`) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Boot sequence** — typed terminal boot on first visit (session-gated, reduced-motion aware)
+- **Animated star field** — canvas layer with twinkle, drift, cursor constellations, and shooting stars; renders a static frame under `prefers-reduced-motion` and pauses on hidden tabs
+- **Custom cursor** — four spring-physics states (dot, hover ring, link glow, project OPEN label), disabled on touch
+- **Route transitions** — true exit animations via a frozen-outlet pattern with AnimatePresence
+- **Command palette** — Ctrl/Cmd+K anywhere: fuzzy filter, arrow-key navigation, every route plus email/GitHub; doubles as the mobile menu
+- **Case files** — data-driven project case studies at `/projects/:slug`
+- **A11y** — skip link, focus-visible states, focus return, one `h1` per page, `aria-current` nav
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Color System
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Swatch | Name | Hex |
+|---|---|---|
+| ![#050505](https://placehold.co/20x20/050505/050505.png) | Background | `#050505` |
+| ![#0D0D0D](https://placehold.co/20x20/0D0D0D/0D0D0D.png) | Surface | `#0D0D0D` |
+| ![#1A1A1A](https://placehold.co/20x20/1A1A1A/1A1A1A.png) | Border | `#1A1A1A` |
+| ![#F5F5F5](https://placehold.co/20x20/F5F5F5/F5F5F5.png) | Primary Text | `#F5F5F5` |
+| ![#8A8A8A](https://placehold.co/20x20/8A8A8A/8A8A8A.png) | Secondary Text | `#8A8A8A` |
+| ![#00E0FF](https://placehold.co/20x20/00E0FF/00E0FF.png) | Accent | `#00E0FF` |
+| ![#66ECFF](https://placehold.co/20x20/66ECFF/66ECFF.png) | Hover Accent | `#66ECFF` |
+
+---
+
+## Getting Started
+
+```bash
+npm install       # install dependencies
+npm run dev       # dev server
+npm run lint      # eslint
+npm run build     # typecheck + production build
+npm run preview   # serve the production build locally
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+  components/   layout (Nav, Footer, PageTransition), cursor, background, terminal (palette)
+  data/         all editable content: profile.ts, projects.ts, stack.ts, about.ts
+  routes/       router, Layout, frozen-outlet transition wiring
+  sections/     one folder per page (Hero, Projects, CaseStudy, About, Stack, Contact, NotFound)
+```
+
+All content is edited in `src/data/` — no page markup changes needed for copy updates.
+
+---
+
+## Branch Strategy
+
+```
+main        → production (Vercel auto-deploys)
+dev         → staging / integration branch
+feature/*   → individual features, PR into dev
+```
+
+---
+
+*Built by [Carson Woodside](https://github.com/CarsonWoodside)*
